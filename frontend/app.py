@@ -1,6 +1,10 @@
 import streamlit as st
 import requests
 import pandas as pd
+import os
+
+API_BASE_URL = "https://fastapi-backend-abc123.onrender.com"
+
 
 st.set_page_config(layout="wide")
 
@@ -43,7 +47,7 @@ with st.expander("Adicionar um Novo Produto"):
 
         if submit_button:
             response = requests.post(
-                "http://backend:8000/products/",
+                f"{API_BASE_URL}/products/",
                 json={
                     "name": name,
                     "description": description,
@@ -56,7 +60,7 @@ with st.expander("Adicionar um Novo Produto"):
 # Visualizar Produtos
 with st.expander("Visualizar Produtos"):
     if st.button("Exibir Todos os Produtos"):
-        response = requests.get("http://backend:8000/products/")
+        response = requests.get(f"{API_BASE_URL}/products/")
         if response.status_code == 200:
             product = response.json()
             df = pd.DataFrame(product)
@@ -82,7 +86,7 @@ with st.expander("Visualizar Produtos"):
 with st.expander("Obter Detalhes de um Produto"):
     get_id = st.number_input("ID do Produto", min_value=1, format="%d")
     if st.button("Buscar Produto"):
-        response = requests.get(f"http://backend:8000/products/{get_id}")
+        response = requests.get(f"{API_BASE_URL}/products/{get_id}")
         if response.status_code == 200:
             product = response.json()
             df = pd.DataFrame([product])
@@ -108,7 +112,7 @@ with st.expander("Obter Detalhes de um Produto"):
 with st.expander("Deletar Produto"):
     delete_id = st.number_input("ID do Produto para Deletar", min_value=1, format="%d")
     if st.button("Deletar Produto"):
-        response = requests.delete(f"http://backend:8000/products/{delete_id}")
+        response = requests.delete(f"{API_BASE_URL}/products/{delete_id}")
         show_response_message(response)
 
 # Atualizar Produto
@@ -145,7 +149,7 @@ with st.expander("Atualizar Produto"):
 
             if update_data:
                 response = requests.put(
-                    f"http://backend:8000/products/{update_id}", json=update_data
+                    f"{API_BASE_URL}/products/{update_id}", json=update_data
                 )
                 show_response_message(response)
             else:
