@@ -3,7 +3,7 @@ import requests
 import pandas as pd
 import os
 
-API_BASE_URL = "https://fastapi-backend-abc123.onrender.com"
+API_BASE_URL = "https://fastapi-crud-postgres-streamlit.onrender.com"
 
 
 st.set_page_config(layout="wide")
