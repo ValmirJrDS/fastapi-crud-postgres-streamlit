@@ -266,3 +266,117 @@ Uma task é uma instância de uma task definition. Ou seja, é uma execução da
 
 Um service é um grupo de tasks que são executadas juntas. Por exemplo, se você tem uma task definition que define que a sua aplicação vai ser executada com 2 instâncias, você terá 2 tasks executando a sua aplicação. Essas 2 tasks formam um service. Se alguma tarefa falhar, o service vai garantir que ela vai ser executada novamente. O service também pode ser utilizado para balancear a carga entre as tasks.
 
+## 🚀 Deploy no Render (Streamlit Frontend + FastAPI Backend)
+
+Este projeto possui um frontend desenvolvido com **Streamlit** e um backend em **FastAPI**. Ambos são implantados gratuitamente na plataforma [Render](https://render.com), que permite hospedar APIs e aplicações web de forma prática e escalável.
+
+---
+
+### 📁 Estrutura de Diretórios
+
+```
+.
+├── backend/
+│   ├── main.py
+│   ├── models.py
+│   ├── schemas.py
+│   ├── crud.py
+│   ├── database.py
+│   ├── router.py
+│   ├── requirements.txt
+│   └── Dockerfile
+├── frontend/
+│   ├── app.py
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── logo.png
+└── README.md
+```
+
+---
+
+## 🔧 Etapas de Deploy
+
+### 1. 🔄 Ajustes no Frontend (`app.py`)
+
+**a) Crie a variável `API_BASE_URL` após os imports:**
+
+```python
+API_BASE_URL = "https://fastapi-backend-xxxxx.onrender.com"
+```
+
+> Substitua `xxxxx` pela URL gerada após o deploy do backend no Render.
+
+**b) Substitua as chamadas diretas pela variável**
+
+Exemplo:
+
+```python
+# De:
+requests.post("http://backend:8000/products/", json={...})
+
+# Para:
+requests.post(f"{API_BASE_URL}/products/", json={...})
+```
+
+Faça isso para todas as chamadas: `GET`, `POST`, `PUT`, `DELETE`.
+
+---
+
+### 2. 📤 Subir alterações para o GitHub
+
+```bash
+git add .
+git commit -m "Ajustes para deploy no Render"
+git push origin main
+```
+
+---
+
+### 3. ☁️ Deploy do Backend no Render
+
+1. Acesse [https://render.com](https://render.com) e clique em **"New Web Service"**.
+2. Conecte ao seu repositório do GitHub.
+3. Escolha o diretório `backend/`.
+4. Configure os campos:
+
+```
+Name: fastapi-backend
+Runtime: Docker
+Branch: main
+Root Directory: backend
+```
+
+5. Clique em **"Create Web Service"**.
+6. Aguarde o deploy terminar e copie a URL gerada, exemplo:  
+   `https://fastapi-backend-xxxxx.onrender.com`
+
+7. Volte ao `app.py` do frontend e atualize a variável `API_BASE_URL` com essa URL.
+
+---
+
+### 4. ☁️ Deploy do Frontend no Render
+
+1. Volte ao Render e clique em **"New Web Service"**.
+2. Escolha o diretório `frontend/`.
+3. Configure os campos:
+
+```
+Name: streamlit-frontend
+Runtime: Docker
+Branch: main
+Root Directory: frontend
+```
+
+4. Clique em **"Create Web Service"**.
+5. Aguarde o deploy e acesse a URL gerada.
+
+---
+
+### ✅ Observações Finais
+
+- Certifique-se de que os dois serviços (frontend e backend) estejam com o status “Live”.
+- O frontend deve conseguir consumir a API do backend diretamente pela URL pública definida em `API_BASE_URL`.
+- Esse processo permite que o projeto funcione em ambiente de produção gratuito, ideal para portfólio ou testes.
+
+---
