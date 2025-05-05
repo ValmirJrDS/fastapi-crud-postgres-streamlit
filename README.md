@@ -1,5 +1,10 @@
 # CRUD FASTAPI POSTGRES STREAMLIT
 
+## Essa URL é pública. Criei todo o Projeto e fiz o Deploy no Render, serviço cloud que em sua versão gratuita, disponibiliza webservice para estudos:
+
+https://fastapi-crud-postgres-streamlit.onrender.com
+
+
 Você sabe o que é CRUD?
 
 ![Imagem CRUD](assets/crud.jpeg)
